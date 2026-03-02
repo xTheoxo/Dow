@@ -1,14 +1,62 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Dow
 {
     class Program
     {
+
+        const string VERSION_LOCALE = "1.1x";
+
+        static async Task VerifierMiseAJour()
+        {
+            string url = "https://api.github.com/repos/xTheoxo/Dow/releases/latest";
+
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Add("User-Agent", "Dow-App");
+
+                    string json = await client.GetStringAsync(url);
+
+                    using (JsonDocument doc = JsonDocument.Parse(json))
+                    {
+                        string versionGithub = doc.RootElement
+                                                  .GetProperty("tag_name")
+                                                  .GetString();
+
+                        Console.WriteLine($"Version actuelle : {VERSION_LOCALE}");
+                        
+
+                        if (versionGithub != VERSION_LOCALE)
+                        {
+                            Console.WriteLine($"Version GitHub : {versionGithub}");
+                            Console.WriteLine("Nouvelle version disponible !");
+                            Console.WriteLine("https://github.com/xTheoxo/Dow/releases");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Vous avez la dernière version.");
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erreur lors de la vérification : " + ex.Message);
+            }
+        }
+
+
         static async Task Main(string[] args)
         {
+            await VerifierMiseAJour();
+
             string? reponse_dl;
             string url = "https://piston-data.mojang.com/v1/objects/64bb6d763bed0a9f1d632ec347938594144943ed/server.jar";
             string? choixVersion = null;
@@ -22,9 +70,6 @@ namespace Dow
 
             string? path = @"";
 
-            const string maps = "1.0";
-
-            Console.WriteLine("v" + maps);
             Dictionary<string, string> versions = new Dictionary<string, string>()
             {
                 { "1.21.11", "https://piston-data.mojang.com/v1/objects/64bb6d763bed0a9f1d632ec347938594144943ed/server.jar" },
@@ -33,6 +78,7 @@ namespace Dow
                 { "1.19.4", "https://fill-data.papermc.io/v1/objects/e587d78cba3e99ef8c4bc24cf20cc3bdbbe89e33b0b572070446af4eb6be5ccf/paper-1.19.4-550.jar" }
             };
 
+            Console.WriteLine(" ");
             Console.WriteLine("Entrez le chemin du fichier : ex C:\\Users\\Prenom\\Desktop\\NOMDUDOSSIER ");
             Console.WriteLine("Ou mettez directement le nom dossier et il se créera au meme endroit que ce programme");
             Console.WriteLine("Marquez exit pour fermer le programme");
@@ -72,6 +118,7 @@ namespace Dow
                     {
                         Console.WriteLine("Choisissez une version :");
 
+                        // Affichage des versions disponibles
                         foreach (var version in versions.Keys)
                         {
                             Console.WriteLine("- " + version);
@@ -129,12 +176,16 @@ namespace Dow
 
                         contenuBat =
                         @"@echo off
+cd /d %~dp0
 java -Xmx4G -jar server.jar nogui
 pause";
 
                         File.WriteAllText(cheminBat, contenuBat);
 
                         Console.WriteLine("Fichier .bat créé avec succès !");
+
+                        Console.WriteLine(path);
+                        Process.Start(path + "/start.bat");
                     }
                 }
             }
