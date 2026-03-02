@@ -70,7 +70,7 @@ namespace Dow
 
             string? path = @"";
 
-            Dictionary<string, string> versions = new Dictionary<string, string>()
+            Dictionary<string, string> versions_vanilla = new Dictionary<string, string>()
             {
                 { "1.21.11", "https://piston-data.mojang.com/v1/objects/64bb6d763bed0a9f1d632ec347938594144943ed/server.jar" },
                 { "1.20.4", "https://piston-data.mojang.com/v1/objects/8dd1a28015f51b1803213892b50b7b4fc76e594d/server.jar" },
@@ -121,7 +121,7 @@ namespace Dow
                         Console.WriteLine("Choisissez une version :");
 
                         // Affichage des versions disponibles
-                        foreach (var version in versions.Keys)
+                        foreach (var version in versions_vanilla.Keys)
                         {
                             Console.WriteLine("- " + version);
                         }
@@ -132,9 +132,9 @@ namespace Dow
                         choixVersion = Console.ReadLine();
 
                         // Si la version choisie est dans la liste des versions disponibles, on télécharge le fichier .jar du serveur minecraft
-                        if (versions.ContainsKey(choixVersion))
+                        if (versions_vanilla.ContainsKey(choixVersion))
                         {
-                            url = versions[choixVersion];
+                            url = versions_vanilla[choixVersion];
                             Console.WriteLine("Téléchargement de la version " + choixVersion);
 
                             // Le met dans le dossier créé précédement et le renomme en server.jar
@@ -157,7 +157,7 @@ namespace Dow
                             Console.WriteLine("Version invalide !");
                         }
                     }
-                    while (!versions.ContainsKey(choixVersion) && choixVersion != "exit");
+                    while (!versions_vanilla.ContainsKey(choixVersion) && choixVersion != "exit");
 
                     Console.WriteLine("Voulez-vous créer le fichier .bat qui sert a démarrer le serveur ? (y/n)");
                     Console.Write("> ");
