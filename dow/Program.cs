@@ -73,9 +73,11 @@ namespace Dow
             Dictionary<string, string> versions = new Dictionary<string, string>()
             {
                 { "1.21.11", "https://piston-data.mojang.com/v1/objects/64bb6d763bed0a9f1d632ec347938594144943ed/server.jar" },
-                { "1.20.4", "https://fill-data.papermc.io/v1/objects/cabed3ae77cf55deba7c7d8722bc9cfd5e991201c211665f9265616d9fe5c77b/paper-1.20.4-499.jar" },
-                { "1.20.2", "https://fill-data.papermc.io/v1/objects/ba340a835ac40b8563aa7eda1cd6479a11a7623409c89a2c35cd9d7490ed17a7/paper-1.20.2-318.jar" },
-                { "1.19.4", "https://fill-data.papermc.io/v1/objects/e587d78cba3e99ef8c4bc24cf20cc3bdbbe89e33b0b572070446af4eb6be5ccf/paper-1.19.4-550.jar" }
+                { "1.20.4", "https://piston-data.mojang.com/v1/objects/8dd1a28015f51b1803213892b50b7b4fc76e594d/server.jar" },
+                { "1.20.2", "https://piston-data.mojang.com/v1/objects/5b868151bd02b41319f54c8d4061b8cae84e665c/server.jar" },
+                { "1.19.4", "https://piston-data.mojang.com/v1/objects/8f3112a1049751cc472ec13e397eade5336ca7ae/server.jar" },
+                { "1.8.9", "https://launcher.mojang.com/v1/objects/b58b2ceb36e01bcd8dbf49c8fb66c55a9f0676cd/server.jar" },
+                { "1.7.10", "https://launcher.mojang.com/v1/objects/952438ac4e01b4d115c5fc38f891710c4941df29/server.jar" }
             };
 
             Console.WriteLine(" ");
@@ -157,7 +159,7 @@ namespace Dow
                     }
                     while (!versions.ContainsKey(choixVersion) && choixVersion != "exit");
 
-                    Console.WriteLine("Voulez-vous créer le fichier .bat qui sert a démarrer le serveur");
+                    Console.WriteLine("Voulez-vous créer le fichier .bat qui sert a démarrer le serveur ? (y/n)");
                     Console.Write("> ");
                     reponse_bat = Console.ReadLine();
 
