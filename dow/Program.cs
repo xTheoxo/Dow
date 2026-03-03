@@ -10,7 +10,7 @@ namespace Dow
     class Program
     {
 
-        const string VERSION_LOCALE = "1.1x";
+        const string VERSION_LOCALE = "1.2x";
 
         static async Task VerifierMiseAJour()
         {
@@ -68,16 +68,35 @@ namespace Dow
             string cheminBat;
             string contenuBat;
 
+            Dictionary<string, string>? version_choix = null;
+
+            int choix = 1;
+
             string? path = @"";
 
             Dictionary<string, string> versions_vanilla = new Dictionary<string, string>()
             {
                 { "1.21.11", "https://piston-data.mojang.com/v1/objects/64bb6d763bed0a9f1d632ec347938594144943ed/server.jar" },
+                { "1.21.8", "https://piston-data.mojang.com/v1/objects/6bce4ef400e4efaa63a13d5e6f6b500be969ef81/server.jar" },
                 { "1.20.4", "https://piston-data.mojang.com/v1/objects/8dd1a28015f51b1803213892b50b7b4fc76e594d/server.jar" },
                 { "1.20.2", "https://piston-data.mojang.com/v1/objects/5b868151bd02b41319f54c8d4061b8cae84e665c/server.jar" },
                 { "1.19.4", "https://piston-data.mojang.com/v1/objects/8f3112a1049751cc472ec13e397eade5336ca7ae/server.jar" },
                 { "1.8.9", "https://launcher.mojang.com/v1/objects/b58b2ceb36e01bcd8dbf49c8fb66c55a9f0676cd/server.jar" },
                 { "1.7.10", "https://launcher.mojang.com/v1/objects/952438ac4e01b4d115c5fc38f891710c4941df29/server.jar" }
+            };
+
+            Dictionary<string, string> versions_paper = new Dictionary<string, string>()
+            {
+                { "1.21.11", "https://fill-data.papermc.io/v1/objects/367f5088c7cc5c8f83cbededf4760622d4a27425be45611d3db6f11c75fac901/paper-1.21.11-126.jar" },
+                { "1.21.8", "https://fill-data.papermc.io/v1/objects/8de7c52c3b02403503d16fac58003f1efef7dd7a0256786843927fa92ee57f1e/paper-1.21.8-60.jar" },
+                { "1.21.7", "https://fill-data.papermc.io/v1/objects/83838188699cb2837e55b890fb1a1d39ad0710285ed633fbf9fc14e9f47ce078/paper-1.21.7-32.jar" },
+                { "1.21.6", "https://fill-data.papermc.io/v1/objects/4b011f5adb5f6c72007686a223174fce82f31aeb4b34faf4652abc840b47e640/paper-1.20.6-151.jar" },
+                { "1.20.4", "https://fill-data.papermc.io/v1/objects/cabed3ae77cf55deba7c7d8722bc9cfd5e991201c211665f9265616d9fe5c77b/paper-1.20.4-499.jar" },
+                { "1.20.2", "https://fill-data.papermc.io/v1/objects/ba340a835ac40b8563aa7eda1cd6479a11a7623409c89a2c35cd9d7490ed17a7/paper-1.20.2-318.jar" },
+                { "1.20.1", "https://fill-data.papermc.io/v1/objects/234a9b32098100c6fc116664d64e36ccdb58b5b649af0f80bcccb08b0255eaea/paper-1.20.1-196.jar" },
+                { "1.19.4", "https://fill-data.papermc.io/v1/objects/e587d78cba3e99ef8c4bc24cf20cc3bdbbe89e33b0b572070446af4eb6be5ccf/paper-1.19.4-550.jar" },
+                { "1.8.8", "https://fill-data.papermc.io/v1/objects/7ff6d2cec671ef0d95b3723b5c92890118fb882d73b7f8fa0a2cd31d97c55f86/paper-1.8.8-445.jar" },
+                { "1.7.10", "https://fill-data.papermc.io/v1/objects/33772078d92e9dbb027602da016524ef29af5b4c12eaddac1fe2465b01108185/paper-1.7.10-2025.jar" }
             };
 
             Console.WriteLine(" ");
@@ -119,9 +138,45 @@ namespace Dow
                     do
                     {
                         Console.WriteLine("Choisissez une version :");
+                        Console.WriteLine("Version disponible :");
+                        Console.WriteLine("1.Vanilla");
+                        Console.WriteLine("2.Plugins (Paper)");
+                        Console.WriteLine("3.Moddés (Forge)");
+                        Console.WriteLine("4.Moddés (Fabric)");
+
+                        choix = Convert.ToInt32(Console.ReadLine());
+
+                        while (choix < 1 || choix > 4)
+                        {
+                            
+                            Console.WriteLine("Veuillez entrer un nombre entre 1 et 4");
+                            Console.Write("> ");
+                            choix = Convert.ToInt32(Console.ReadLine());
+                        }
+                        
+                        
+                        switch (choix)
+                        {
+                            case 1:
+                                Console.WriteLine("Vous avez choisi Vanilla");
+                                version_choix = versions_vanilla;
+                                break;
+                            case 2:
+                                Console.WriteLine("Vous avez choisi Paper");
+                                version_choix = versions_paper;
+                                break;
+                            case 3:
+                                Console.WriteLine("Vous avez choisi Forge");
+                                //version_choix = versions_forge;
+                                break;
+                            case 4:
+                                Console.WriteLine("Vous avez choisi Fabric");
+                                //version_choix = versions_fabric;
+                                break;
+                        }
 
                         // Affichage des versions disponibles
-                        foreach (var version in versions_vanilla.Keys)
+                        foreach (var version in version_choix.Keys)
                         {
                             Console.WriteLine("- " + version);
                         }
@@ -132,9 +187,9 @@ namespace Dow
                         choixVersion = Console.ReadLine();
 
                         // Si la version choisie est dans la liste des versions disponibles, on télécharge le fichier .jar du serveur minecraft
-                        if (versions_vanilla.ContainsKey(choixVersion))
+                        if (version_choix.ContainsKey(choixVersion))
                         {
-                            url = versions_vanilla[choixVersion];
+                            url = version_choix[choixVersion];
                             Console.WriteLine("Téléchargement de la version " + choixVersion);
 
                             // Le met dans le dossier créé précédement et le renomme en server.jar
@@ -186,7 +241,6 @@ pause";
 
                         Console.WriteLine("Fichier .bat créé avec succès !");
 
-                        Console.WriteLine(path);
                         Process.Start(path + "/start.bat");
                     }
                 }
