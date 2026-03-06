@@ -69,6 +69,7 @@ namespace Dow
             string contenuBat;
             string reponse_jdk;
             string urlJdk;
+            string? reponse_start;
 
             Dictionary<string, string>? version_choix = null;
 
@@ -108,7 +109,7 @@ namespace Dow
             Console.WriteLine("Entrez le chemin du fichier : ex C:\\Users\\Prenom\\Desktop\\NOMDUDOSSIER ");
             Console.WriteLine("Ou mettez directement le nom dossier et il se créera au meme endroit que ce programme");
             Console.WriteLine("Marquez exit pour fermer le programme");
-            
+
 
             while (Directory.Exists(path) || path == "")
             {
@@ -129,7 +130,7 @@ namespace Dow
                 {
                     Console.WriteLine("Le dossier existe déjà");
                 }
-                
+
             }
 
             Console.WriteLine(" ");
@@ -311,9 +312,18 @@ pause";
                 }
 
 
-                //Process.Start(path + "/start.bat");
-
                 // Vérifier que le JDK est installé
+            }
+            // Lance un cmd pour démarrer le start.bat
+            //Process.Start(Path.Combine(path, "start.bat"));
+
+            Console.WriteLine("Voulez-vous démarrer le serveur maintenant ? (y/n)");
+            Console.Write("> ");
+            reponse_start = Console.ReadLine();
+
+            if (reponse_start == "y")
+            {
+                Process.Start("powershell", "cd '" + path + "' ; start start.bat");
             }
         }
     }
